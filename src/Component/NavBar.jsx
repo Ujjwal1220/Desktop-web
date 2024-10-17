@@ -1,5 +1,5 @@
 import React from "react";
-import { BASE_URL, Robert } from "../utilish/extrastuff";
+import { BASE_URL } from "../utilish/extrastuff";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { removeUser } from "../utilish/userSlice";
 
 const NavBar = () => {
   const myData = useSelector((store) => store.user);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -34,7 +35,10 @@ const NavBar = () => {
               className="btn btn-ghost btn-circle avatar "
             >
               <div className="w-10 rounded-full">
-                <img alt="Tailwind CSS Navbar component" src={Robert} />
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src={myData.photourl}
+                />
               </div>
               <p>Welcome {myData.FirstName} </p>
             </div>
