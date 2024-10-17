@@ -7,6 +7,7 @@ import { BASE_URL } from "../utilish/extrastuff";
 const Login = () => {
   const [Email, setEmail] = useState("akashmishra@gmail.com");
   const [password, setPassword] = useState("Akash@123");
+  const [error, seterror] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,11 +25,8 @@ const Login = () => {
       );
       dispatch(addUser(response.data));
       navigate("/");
-    } catch (error) {
-      console.error(
-        "Error logging in:",
-        error.response ? error.response.data : error.message
-      );
+    } catch (err) {
+      seterror(err?.response?.data);
     }
   };
 
@@ -61,6 +59,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
+          <p className="text-red-600 ">{error}</p>
           <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={handleLogin}>
               Login

@@ -1,10 +1,23 @@
 import React from "react";
-import { Robert } from "../utilish/extrastuff";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { BASE_URL, Robert } from "../utilish/extrastuff";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { removeUser } from "../utilish/userSlice";
 
 const NavBar = () => {
   const myData = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await axios.post(BASE_URL + "/logout", {}, { withCredentials: true });
+      dispatch(removeUser());
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <div className="navbar bg-base-300 ">
       <div className="flex-1">
@@ -13,13 +26,6 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="flex-none gap-2 mx-4">
-        <div className="form-control ">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
-          />
-        </div>
         {myData && (
           <div className="dropdown dropdown-end">
             <div
@@ -47,7 +53,7 @@ const NavBar = () => {
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                <a onClick={handleLogout}>Logout </a>
               </li>
             </ul>
           </div>
