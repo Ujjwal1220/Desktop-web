@@ -28,9 +28,9 @@ const Connections = () => {
     <div className="text-center my-4 w-1/2 mx-auto">
       <h1 className="text-4xl font-bold ">Connections</h1>
       {feed.map((connection) => {
-        const { FirstName, LastName, photourl, gender } = connection;
+        const { _id, FirstName, LastName, photourl, gender } = connection;
         return (
-          <div className=" flex m-4 p-4 rounded-lg bg-base-300">
+          <div key={_id} className=" flex m-4 p-4 rounded-lg bg-base-300">
             <div>
               <img
                 alt="photo"
