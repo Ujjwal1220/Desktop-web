@@ -8,29 +8,35 @@ import UserCard from "./UserCard";
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
   const dispatch = useDispatch();
+
   const getFeed = async () => {
-    if (feed) return;
     try {
-      const res = await axios.get(
-        BASE_URL + "/feed",
-
-        { withCredentials: true }
-      );
-
-      dispatch(addFeed(res?.data[1]?.data));
+      // Fetch feed if not already available
+      if (!feed || feed.length === 0) {
+        const res = await axios.get(BASE_URL + "/feed", {
+          withCredentials: true,
+        });
+        console.log(res?.data?.data); // Check where data is located
+        dispatch(addFeed(res?.data?.data)); // Update feed in Redux store
+      }
     } catch (err) {
       console.error(err);
     }
   };
+
   useEffect(() => {
     getFeed();
-  }, []);
-  return (
-    feed && (
-      <div>
-        <UserCard user={feed[0]} />
-      </div>
-    )
+  }, []); // Fetch feed on component mount
+
+  // Render UserCards if feed is available
+  return feed && feed.length > 0 ? (
+    <div>
+      {feed.map((user) => (
+        <UserCard key={user._id} user={user} />
+      ))}
+    </div>
+  ) : (
+    <div>No users available in the feed</div>
   );
 };
 
